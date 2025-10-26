@@ -3,13 +3,15 @@ package br.com.jprangel.vaccination_api.controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.jprangel.vaccination_api.dto.VaccinationCardResponse;
+import br.com.jprangel.vaccination_api.dto.VaccinationCardGridDTO;
 import br.com.jprangel.vaccination_api.dto.VaccinationRecordRequest;
+import br.com.jprangel.vaccination_api.model.enuns.VaccineCategory;
 import br.com.jprangel.vaccination_api.usecase.vaccination.AddVaccinationUseCase;
 import br.com.jprangel.vaccination_api.usecase.vaccination.DeleteVaccinationRecordUseCase;
-import br.com.jprangel.vaccination_api.usecase.vaccination.GetVaccinationCardUseCase;
+import br.com.jprangel.vaccination_api.usecase.vaccination.GetVaccinationCardGridUseCase;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,29 +26,34 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class VaccinationRecordController {
   
   private final AddVaccinationUseCase addVaccinationUseCase;
-  private final GetVaccinationCardUseCase getVaccinationCardUseCase;
+  private final GetVaccinationCardGridUseCase getVaccinationCardGridUseCase;
   private final DeleteVaccinationRecordUseCase deleteVaccinationRecordUseCase;
 
-  public VaccinationRecordController(AddVaccinationUseCase addVaccinationUseCase,
-                                     GetVaccinationCardUseCase getVaccinationCardUseCase,
-                                     DeleteVaccinationRecordUseCase deleteVaccinationRecordUseCase) {
+  public VaccinationRecordController(
+    AddVaccinationUseCase addVaccinationUseCase,
+    GetVaccinationCardGridUseCase getVaccinationCardGridUseCase,
+    DeleteVaccinationRecordUseCase deleteVaccinationRecordUseCase) {
+
     this.addVaccinationUseCase = addVaccinationUseCase;
-    this.getVaccinationCardUseCase = getVaccinationCardUseCase;
+    this.getVaccinationCardGridUseCase = getVaccinationCardGridUseCase;
     this.deleteVaccinationRecordUseCase = deleteVaccinationRecordUseCase;
   }
 
   @PostMapping
-  public ResponseEntity<VaccinationCardResponse> addVaccination(
+  public ResponseEntity<VaccinationCardGridDTO> addVaccination(
     @PathVariable Long personId, 
     @RequestBody VaccinationRecordRequest request) {
 
-    VaccinationCardResponse response = addVaccinationUseCase.execute(personId, request);
+    VaccinationCardGridDTO response = addVaccinationUseCase.execute(personId, request);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @GetMapping
-  public ResponseEntity<VaccinationCardResponse> getVaccinationCard(@PathVariable Long personId) {
-    VaccinationCardResponse response = getVaccinationCardUseCase.execute(personId);
+  public ResponseEntity<VaccinationCardGridDTO> getVaccinationCard(
+    @PathVariable Long personId, 
+    @RequestParam(required = false) VaccineCategory category) {
+
+    VaccinationCardGridDTO response = getVaccinationCardGridUseCase.execute(personId, category);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 

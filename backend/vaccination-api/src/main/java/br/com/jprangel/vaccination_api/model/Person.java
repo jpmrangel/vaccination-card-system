@@ -1,10 +1,14 @@
 package br.com.jprangel.vaccination_api.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import br.com.jprangel.vaccination_api.model.enuns.Sex;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +27,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Person {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -34,7 +37,13 @@ public class Person {
   @Column(nullable = false, unique = true)
   private String cpf;
 
+  @Column(nullable = false)
+  private LocalDate dateOfBirth;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private Sex sex;
+
   @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<VaccinationRecord> vaccinationRecords;
-  
 }

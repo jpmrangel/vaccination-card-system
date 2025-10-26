@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.jprangel.vaccination_api.dto.PersonRequest;
 import br.com.jprangel.vaccination_api.dto.PersonResponse;
 import br.com.jprangel.vaccination_api.exception.BusinessException;
+import br.com.jprangel.vaccination_api.mapper.PersonMapper;
 import br.com.jprangel.vaccination_api.model.Person;
 import br.com.jprangel.vaccination_api.repository.PersonRepository;
 
@@ -13,9 +14,11 @@ import br.com.jprangel.vaccination_api.repository.PersonRepository;
 public class CreatePersonUseCase {
 
   private final PersonRepository personRepository;
+  private final PersonMapper personMapper;
 
-  public CreatePersonUseCase(PersonRepository personRepository) {
+  public CreatePersonUseCase(PersonRepository personRepository, PersonMapper personMapper) {
     this.personRepository = personRepository;
+    this.personMapper = personMapper;
   }
 
   @Transactional
@@ -28,17 +31,11 @@ public class CreatePersonUseCase {
     Person person = new Person();
     person.setName(request.getName());
     person.setCpf(request.getCpf());
+    person.setDateOfBirth(request.getDateOfBirth());
+    person.setSex(request.getSex());
 
     Person savedPerson = personRepository.save(person);
 
-    return mapToPersonResponse(savedPerson);
-  }
-
-  private PersonResponse mapToPersonResponse(Person person) {
-    PersonResponse response = new PersonResponse();
-    response.setId(person.getId());
-    response.setName(person.getName());
-    response.setCpf(person.getCpf());
-    return response;
+    return personMapper.toResponse(savedPerson);
   }
 }
