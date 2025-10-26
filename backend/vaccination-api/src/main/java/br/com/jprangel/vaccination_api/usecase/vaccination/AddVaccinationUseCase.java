@@ -88,7 +88,6 @@ public class AddVaccinationUseCase {
         break;
       
       // Reforços (qualquer um deles)
-      case REFORCO:
       case PRIMEIRO_REFORCO:
       case SEGUNDO_REFORCO:
         DoseType lastPrimaryDose = findLastPrimaryDose(vaccine.getDoseSchedule());
@@ -104,7 +103,6 @@ public class AddVaccinationUseCase {
       
       // Doses que não têm pré-requisitos
       case PRIMEIRA_DOSE:
-      case DOSE_UNICA:
       default:
         break;
     }
@@ -119,9 +117,6 @@ public class AddVaccinationUseCase {
     }
     if (schedule.contains(DoseType.PRIMEIRA_DOSE)) {
       return DoseType.PRIMEIRA_DOSE;
-    }
-    if (schedule.contains(DoseType.DOSE_UNICA)) {
-      return DoseType.DOSE_UNICA;
     }
     return null;
   }
