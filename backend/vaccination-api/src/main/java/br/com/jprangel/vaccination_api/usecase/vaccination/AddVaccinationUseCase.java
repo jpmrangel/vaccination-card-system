@@ -33,7 +33,6 @@ public class AddVaccinationUseCase {
 
   @Transactional
   public VaccinationCardResponse execute(Long personId, VaccinationRecordRequest request) {
-    
     Person person = personRepository.findById(personId)
             .orElseThrow(() -> new ResourceNotFoundException("Person with ID " + personId + " not found."));
 

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class VaccinationRecordRequest {
-    private Long vaccineId;
-    private LocalDate applicationDate;
-    private DoseType dose;
+  private Long vaccineId;
+  private LocalDate applicationDate;
+  private DoseType dose;
 }

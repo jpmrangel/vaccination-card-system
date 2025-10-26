@@ -18,7 +18,6 @@ public class DeletePersonUseCase {
     
     if (!personRepository.existsById(personId)) {
       throw new ResourceNotFoundException("Person with ID " + personId + " not found.");
-      
     }
     personRepository.deleteById(personId);
   }
