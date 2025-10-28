@@ -1,0 +1,74 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  outline: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.modal input[type="date"],
+.modal button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.modal .button-group { 
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.modal button {
+  cursor: pointer;
+}
+
+.modal button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.modal button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.modal .button-group button[type="button"] {
+  background-color: #f44336;
+  color: white;
+  border: none;
+}
+
+.modal button[type="button"] {
+  background-color: #f44336;
+  color: white;
+  border: none;
+}
+
+.modal p[style*="color: red"] {
+  font-size: 0.9em;
+  margin-top: 10px;
+}

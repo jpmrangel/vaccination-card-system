@@ -1,0 +1,43 @@
+export type Sex = 'MASCULINO' | 'FEMININO' | 'OUTRO';
+export const SexValues = {
+  MASCULINO: 'MASCULINO',
+  FEMININO: 'FEMININO',
+  OUTRO: 'OUTRO',
+} as const;
+
+export type VaccineCategory = 
+  | 'CARTEIRA_NACIONAL' 
+  | 'ANTI_RABICA' 
+  | 'BCG_CONTATO' 
+  | 'VACINAS_PARTICULARES' 
+  | 'OUTRA_VACINA';
+
+export const VaccineCategoryValues = {
+  CARTEIRA_NACIONAL: 'CARTEIRA_NACIONAL',
+  ANTI_RABICA: 'ANTI_RABICA',
+  BCG_CONTATO: 'BCG_CONTATO',
+  VACINAS_PARTICULARES: 'VACINAS_PARTICULARES',
+  OUTRA_VACINA: 'OUTRA_VACINA',
+} as const;
+
+export type DoseType = 
+  | 'PRIMEIRA_DOSE' 
+  | 'SEGUNDA_DOSE' 
+  | 'TERCEIRA_DOSE' 
+  | 'PRIMEIRO_REFORCO' 
+  | 'SEGUNDO_REFORCO';
+
+export const DoseTypeValues = {
+  PRIMEIRA_DOSE: 'PRIMEIRA_DOSE',
+  SEGUNDA_DOSE: 'SEGUNDA_DOSE',
+  TERCEIRA_DOSE: 'TERCEIRA_DOSE',
+  PRIMEIRO_REFORCO: 'PRIMEIRO_REFORCO',
+  SEGUNDO_REFORCO: 'SEGUNDO_REFORCO',
+} as const;
+
+export type DoseStatus = 'TAKEN' | 'MISSING' | 'NOT_APPLICABLE';
+export const DoseStatusValues = {
+  TAKEN: 'TAKEN',
+  MISSING: 'MISSING',
+  NOT_APPLICABLE: 'NOT_APPLICABLE',
+} as const;
