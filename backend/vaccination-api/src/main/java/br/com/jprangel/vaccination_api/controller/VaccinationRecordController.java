@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-
 @RestController
 @RequestMapping("/api/persons/{personId}/card")
 public class VaccinationRecordController {

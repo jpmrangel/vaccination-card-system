@@ -10,5 +10,5 @@ public class VaccineStatusDTO {
   private Long vaccineId;
   private String vaccineName;
   private VaccineCategory category;
-  private List<DoseStatusDTO> doseStatuses;
+  private List<DoseStatusDTO> doses;
 }

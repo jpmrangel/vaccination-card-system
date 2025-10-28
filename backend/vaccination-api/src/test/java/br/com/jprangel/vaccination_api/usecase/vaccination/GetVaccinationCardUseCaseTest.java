@@ -126,7 +126,7 @@ public class GetVaccinationCardUseCaseTest {
     VaccineStatusDTO bcgStatus = gridDTO.getVaccines().get(0);
     assertEquals("BCG", bcgStatus.getVaccineName());
     
-    Map<DoseType, DoseStatus> bcgDoses = bcgStatus.getDoseStatuses().stream()
+    Map<DoseType, DoseStatus> bcgDoses = bcgStatus.getDoses().stream()
         .collect(Collectors.toMap(DoseStatusDTO::getDoseType, DoseStatusDTO::getStatus));
 
     // A pessoa TOMOU a 1ª dose
@@ -141,7 +141,7 @@ public class GetVaccinationCardUseCaseTest {
     VaccineStatusDTO hepBStatus = gridDTO.getVaccines().get(1);
     assertEquals("Hepatite B", hepBStatus.getVaccineName());
 
-    Map<DoseType, DoseStatus> hepBDoses = hepBStatus.getDoseStatuses().stream()
+    Map<DoseType, DoseStatus> hepBDoses = hepBStatus.getDoses().stream()
         .collect(Collectors.toMap(DoseStatusDTO::getDoseType, DoseStatusDTO::getStatus));
 
     // O esquema TEM 1ª dose, mas a pessoa não tomou -> FALTOSA

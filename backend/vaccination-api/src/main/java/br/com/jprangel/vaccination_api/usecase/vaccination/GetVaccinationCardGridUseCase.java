@@ -110,7 +110,7 @@ public class GetVaccinationCardGridUseCase {
           ));
         }
       }
-      vaccineStatus.setDoseStatuses(doseStatusList);
+      vaccineStatus.setDoses(doseStatusList);
       vaccineStatusList.add(vaccineStatus);
     }
 
