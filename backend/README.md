@@ -14,16 +14,17 @@ A arquitetura deste projeto foi desenhada para ser **robusta**, **escalável** e
 Em vez de uma camada de `Service` tradicional, foi adotado o padrão de **Use Case**.  
 Cada funcionalidade de negócio (ex: *Criar Pessoa*, *Adicionar Vacinação*) é isolada em sua própria classe.
 
-**Benefício:** Promove o *Princípio da Responsabilidade Única (SRP)*, tornando cada classe mais simples, focada e fácil de testar.
+**Benefício:** Promove o *Princípio da Responsabilidade Única (SRP)*, tornando cada classe mais simples, focada e **fácil de testar**.
+* **Testes:** Testes unitários foram implementados para a maioria dos Use Cases da lógica de negócio principal (cadastro, busca, regras de vacinação), utilizando Mockito para isolar dependências. _(Nota: Testes para a camada de autenticação não foram implementados)._
 
 ### 🔹 Separação de Camadas
 
 O fluxo da aplicação é **estritamente unidirecional**:
 
-- **Controller (Camada de API):** Recebe requisições HTTP e delega. Não contém lógica de negócio.  
-- **UseCase (Camada de Negócio):** Orquestra a lógica, executa validações (ex: doses sequenciais) e chama os repositórios.  
-- **Mapper:** Converte Entidades (`Person`) em DTOs (`PersonResponse`), mantendo o código limpo e DRY.  
-- **Repository (Camada de Dados):** Interfaces Spring Data JPA para abstrair o acesso ao banco.
+-   **Controller (Camada de API):** Recebe requisições HTTP e delega. Não contém lógica de negócio.  
+-   **UseCase (Camada de Negócio):** Orquestra a lógica, executa validações (ex: doses sequenciais) e chama os repositórios.  
+-   **Mapper:** Converte Entidades (`Person`) em DTOs (`PersonResponse`), mantendo o código limpo e DRY.  
+-   **Repository (Camada de Dados):** Interfaces Spring Data JPA para abstrair o acesso ao banco.
 
 ### 🔹 DTOs (Data Transfer Objects)
 
@@ -41,6 +42,13 @@ Regras como *“um reforço só pode ser aplicado após a última dose primária
 ### 🔹 API "Inteligente" para o Grid
 
 A rota `GET /api/persons/{id}/card` retorna um DTO de “Grid” pré-processado, com status de cada dose (`TAKEN`, `MISSING`, `NOT_APPLICABLE`), simplificando a renderização no frontend.
+
+### 🔹 Autenticação e Segurança
+
+* O sistema utiliza **Spring Security** para gerenciar a autenticação.
+* A autenticação é baseada em **Tokens JWT (JSON Web Tokens)**, garantindo uma API *stateless*.
+* Endpoints sob `/api/auth/**` (login, registro) são públicos, enquanto todos os outros endpoints (`/api/**`) exigem um token JWT válido no cabeçalho `Authorization: Bearer <token>`.
+* As senhas dos usuários são armazenadas de forma segura usando `BCryptPasswordEncoder`.
 
 
 ## ⚙️ 2. Setup e Execução
