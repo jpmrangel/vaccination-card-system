@@ -34,7 +34,7 @@ export const deleteVaccinationRecord = async (
   recordId: number
 ) : Promise<void> => {
   try {
-    await api.delete<VaccinationCardGridDTO>(`/persons/${personId}/card/${recordId}`);
+    await api.delete<VaccinationCardGridDTO>(`/persons/${personId}/card/records/${recordId}`);
   } catch (error) {
     console.error(`Erro ao deletar registro ${recordId} para pessoa ${personId}:`, error);
     throw error;
