@@ -1,0 +1,52 @@
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+*-debug.log*
+*-error.log*
+*debug.log*
+*error.log*
+
+# Dependências e Build
+/backend/target/
+/frontend/node_modules/
+/frontend/dist/
+/frontend/dist-ssr/
+*.local
+
+# Arquivos de IDE e Configuração Local
+.idea/
+**/.vscode/*
+!.vscode/extensions.json
+!**/.vscode/extensions.json
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+.springBeans
+.sts4-cache
+.factorypath
+.apt_generated
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Netbeans specific
+/nbproject/private/
+/nbbuild/
+/nbdist/
+/.nb-gradle/
+build/
+
+# /backend/.mvn/wrapper/maven-wrapper.jar 
+# !/backend/src/main/**/target/
+# !/backend/src/test/**/target/
+
+# Outros
+HELP.md
