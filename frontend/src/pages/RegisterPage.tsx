@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { register } from '../services/authService'; // Importe a função register
+import { register } from '../services/authService';
 import type { RegisterRequest } from '../types/Auth';
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(''); // Campo extra
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -17,12 +17,11 @@ const RegisterPage: React.FC = () => {
     setError(null);
     setSuccessMessage(null);
 
-    // Validação básica de senha
     if (password !== confirmPassword) {
       setError('As senhas não coincidem.');
       return;
     }
-    if (password.length < 6) { // Exemplo de validação mínima
+    if (password.length < 6) {
         setError('A senha deve ter pelo menos 6 caracteres.');
         return;
     }
@@ -34,18 +33,16 @@ const RegisterPage: React.FC = () => {
     try {
       const message = await register(userData);
       setSuccessMessage(`${message} Você será redirecionado para o login.`);
-      // Limpa o formulário
+      
       setUsername('');
       setPassword('');
       setConfirmPassword('');
       
-      // Redireciona para login após um tempo
       setTimeout(() => {
         navigate('/login');
-      }, 3000); // Espera 3 segundos
+      }, 3000);
 
     } catch (err: any) {
-        // A função 'register' já trata e joga a mensagem de erro da API
       setError(err.message || 'Erro ao registrar. Tente novamente.'); 
       console.error(err);
     } finally {

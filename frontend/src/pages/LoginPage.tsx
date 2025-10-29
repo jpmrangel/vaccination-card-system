@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../services/authService'; // Importe o serviço
-import axios from 'axios'; // Para checar erros
+import { login } from '../services/authService';
+import axios from 'axios';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -17,10 +17,10 @@ const LoginPage: React.FC = () => {
 
     try {
       await login({ username, password });
-      navigate('/'); // Redireciona para a Home/Dashboard após login
+      navigate('/');
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response?.status === 401) {
-          setError('Usuário ou senha inválidos.'); // Erro comum de autenticação
+          setError('Usuário ou senha inválidos.');
       } else {
           setError('Erro ao tentar fazer login. Tente novamente.');
       }

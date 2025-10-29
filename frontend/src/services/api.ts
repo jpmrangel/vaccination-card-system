@@ -9,12 +9,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    // Get token dynamically *before* sending the request
-    // We need to import getToken *inside* the interceptor function 
-    // or ensure AuthService is fully loaded. A simple way is to re-import locally if needed,
-    // or rely on the module system having resolved it by the time a request is made.
-    // Let's try relying on the initial load first.
-    const token = localStorage.getItem('authToken'); // Directly access localStorage here is safer from circular dependencies
+    const token = localStorage.getItem('authToken');
     
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
