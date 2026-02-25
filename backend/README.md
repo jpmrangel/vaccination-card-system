@@ -1,116 +1,116 @@
 # 🧬 Vaccination API
 
-API REST para gerenciamento de cartões de vacinação digital.
+REST API for managing digital vaccination cards.
 
-Este é o serviço de **backend** para o sistema `vaccination-card-system`, responsável por toda a lógica de negócio, gerenciamento de dados e regras de vacinação.
+This is the **backend** service for the `vaccination-card-system`, responsible for all business logic, data management, and vaccination rules.
 
 
-## 🏗️ 1. Decisões Arquiteturais
+## 🏗️ 1. Architectural Decisions
 
-A arquitetura deste projeto foi desenhada para ser **robusta**, **escalável** e de **fácil manutenção**, seguindo princípios da **Clean Architecture**.
+The architecture of this project was designed to be **robust**, **scalable**, and **easy to maintain**, following **Clean Architecture** principles.
 
-### 🔹 Padrão de Use Case (Caso de Uso)
+### 🔹 Use Case Pattern
 
-Em vez de uma camada de `Service` tradicional, foi adotado o padrão de **Use Case**.  
-Cada funcionalidade de negócio (ex: *Criar Pessoa*, *Adicionar Vacinação*) é isolada em sua própria classe.
+Instead of a traditional `Service` layer, the **Use Case** pattern was adopted.  
+Each business functionality (e.g., *Create Person*, *Add Vaccination*) is isolated in its own class.
 
-**Benefício:** Promove o *Princípio da Responsabilidade Única (SRP)*, tornando cada classe mais simples, focada e **fácil de testar**.
-* **Testes:** Testes unitários foram implementados para a maioria dos Use Cases da lógica de negócio principal (cadastro, busca, regras de vacinação), utilizando Mockito para isolar dependências. _(Nota: Testes para a camada de autenticação não foram implementados)._
+**Benefit:** Promotes the *Single Responsibility Principle (SRP)*, making each class simpler, focused, and **easy to test**.
+* **Tests:** Unit tests were implemented for most Use Cases of the main business logic (registration, search, vaccination rules), using Mockito to isolate dependencies. _(Note: Tests for the authentication layer were not implemented)._
 
-### 🔹 Separação de Camadas
+### 🔹 Layer Separation
 
-O fluxo da aplicação é **estritamente unidirecional**:
+The application flow is **strictly unidirectional**:
 
--   **Controller (Camada de API):** Recebe requisições HTTP e delega. Não contém lógica de negócio.  
--   **UseCase (Camada de Negócio):** Orquestra a lógica, executa validações (ex: doses sequenciais) e chama os repositórios.  
--   **Mapper:** Converte Entidades (`Person`) em DTOs (`PersonResponse`), mantendo o código limpo e DRY.  
--   **Repository (Camada de Dados):** Interfaces Spring Data JPA para abstrair o acesso ao banco.
+-   **Controller (API Layer):** Receives HTTP requests and delegates. Contains no business logic.  
+-   **UseCase (Business Layer):** Orchestrates logic, executes validations (e.g., sequential doses) and calls repositories.  
+-   **Mapper:** Converts Entities (`Person`) into DTOs (`PersonResponse`), keeping the code clean and DRY.  
+-   **Repository (Data Layer):** Spring Data JPA interfaces to abstract database access.
 
 ### 🔹 DTOs (Data Transfer Objects)
 
-Nunca expomos as entidades do banco diretamente.  
-Usamos DTOs (`PersonRequest`, `PersonResponse`) para definir o contrato da API, aumentando o controle e a segurança.
+We never expose database entities directly.  
+We use DTOs (`PersonRequest`, `PersonResponse`) to define the API contract, increasing control and security.
 
-### 🔹 Integridade de Dados com Enums
+### 🔹 Data Integrity with Enums
 
-Campos críticos como `DoseType`, `Sex`, e `VaccineCategory` são **Enums**, garantindo que apenas valores válidos sejam salvos.
+Critical fields such as `DoseType`, `Sex`, and `VaccineCategory` are **Enums**, ensuring that only valid values are saved.
 
-### 🔹 Lógica de Negócio no Backend
+### 🔹 Business Logic in the Backend
 
-Regras como *“um reforço só pode ser aplicado após a última dose primária”* são validadas no backend (`AddVaccinationUseCase`), garantindo integridade dos dados.
+Rules such as *"a booster can only be applied after the last primary dose"* are validated in the backend (`AddVaccinationUseCase`), ensuring data integrity.
 
-### 🔹 API "Inteligente" para o Grid
+### 🔹 "Smart" API for the Grid
 
-A rota `GET /api/persons/{id}/card` retorna um DTO de “Grid” pré-processado, com status de cada dose (`TAKEN`, `MISSING`, `NOT_APPLICABLE`), simplificando a renderização no frontend.
+The route `GET /api/persons/{id}/card` returns a pre-processed "Grid" DTO with the status of each dose (`TAKEN`, `MISSING`, `NOT_APPLICABLE`), simplifying rendering on the frontend.
 
-### 🔹 Autenticação e Segurança
+### 🔹 Authentication and Security
 
-* O sistema utiliza **Spring Security** para gerenciar a autenticação.
-* A autenticação é baseada em **Tokens JWT (JSON Web Tokens)**, garantindo uma API *stateless*.
-* Endpoints sob `/api/auth/**` (login, registro) são públicos, enquanto todos os outros endpoints (`/api/**`) exigem um token JWT válido no cabeçalho `Authorization: Bearer <token>`.
-* As senhas dos usuários são armazenadas de forma segura usando `BCryptPasswordEncoder`.
-
-
-## ⚙️ 2. Setup e Execução
-
-Siga os passos abaixo para configurar o ambiente local.
+* The system uses **Spring Security** to manage authentication.
+* Authentication is based on **JWT Tokens (JSON Web Tokens)**, ensuring a *stateless* API.
+* Endpoints under `/api/auth/**` (login, registration) are public, while all other endpoints (`/api/**`) require a valid JWT token in the `Authorization: Bearer <token>` header.
+* User passwords are stored securely using `BCryptPasswordEncoder`.
 
 
-### 🧩 Pré-requisitos
+## ⚙️ 2. Setup and Execution
+
+Follow the steps below to configure the local environment.
+
+
+### 🧩 Prerequisites
 
 - **Java (JDK 21)**  :
-  Certifique-se de que a variável de ambiente `JAVA_HOME` aponta para o JDK 21.  
-  Verifique com:
+  Make sure the `JAVA_HOME` environment variable points to JDK 21.  
+  Verify with:
   ```bash
   java -version
   javac -version
   ```
 - **Maven**:
-O projeto utiliza o Maven Wrapper (mvnw), portanto não é necessário instalar o Maven manualmente.
+The project uses the Maven Wrapper (mvnw), so there is no need to install Maven manually.
 
 - **PostgreSQL**:
-Banco de dados relacional utilizado pela aplicação.
+Relational database used by the application.
 
-#### 🗃️ 1. Configuração do Banco de Dados
+#### 🗃️ 1. Database Configuration
 
-Crie o banco de dados e o usuário manualmente antes de iniciar a aplicação:
+Create the database and user manually before starting the application:
 
 ```
-# 1. Acesse o psql como superusuário (Linux)
+# 1. Access psql as superuser (Linux)
 sudo -u postgres psql
 
-# 2. Crie o banco de dados
+# 2. Create the database
 CREATE DATABASE vaccination_db;
 
-# 3. Crie o usuário 'admin' com senha 'admin' (ou use sua preferência)
+# 3. Create the 'admin' user with password 'admin' (or use your preference)
 CREATE USER admin WITH PASSWORD 'admin';
 
-# 4. Dê ao usuário permissão para conectar ao banco
+# 4. Grant the user permission to connect to the database
 GRANT ALL PRIVILEGES ON DATABASE vaccination_db TO admin;
 
-# 5. Conecte-se ao novo banco
+# 5. Connect to the new database
 \c vaccination_db
 
-# 6. Permita criação de tabelas no schema 'public'
+# 6. Allow table creation in the 'public' schema
 GRANT ALL ON SCHEMA public TO admin;
 
-# 7. Saia do psql
+# 7. Exit psql
 \q
 ```
 
-#### ⚙️ 2. Configuração da Aplicação
+#### ⚙️ 2. Application Configuration
 
-Clone o repositório e acesse a pasta backend:
+Clone the repository and navigate to the backend folder:
 ```
-git clone https://github.com/seu-usuario/vaccination-card-system.git
+git clone https://github.com/your-username/vaccination-card-system.git
 cd vaccination-card-system/backend
 ```
-Crie (ou edite) o arquivo src/main/resources/application.properties com as credenciais do banco:
+Create (or edit) the src/main/resources/application.properties file with the database credentials:
 ```
-# Nome da Aplicação
+# Application Name
 spring.application.name=vaccination-api
 
-# Banco de Dados (PostgreSQL)
+# Database (PostgreSQL)
 spring.datasource.url=jdbc:postgresql://localhost:5432/vaccination_db
 spring.datasource.username=admin
 spring.datasource.password=admin
@@ -120,48 +120,49 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 
-# Servidor
+# Server
 server.port=8080
 ```
 
-## 🚀 3. Execução e Testes
+## 🚀 3. Execution and Tests
 
-### ▶️ Executando a Aplicação
+### ▶️ Running the Application
 
-Na raiz da pasta `backend/` (onde está o arquivo `pom.xml`), execute o comando abaixo para iniciar a aplicação:
+At the root of the `backend/` folder (where the `pom.xml` file is), execute the command below to start the application:
 
 ```bash
 ./mvnw clean spring-boot:run
 ```
 
-O parâmetro clean garante que o build anterior seja limpo antes da nova execução.
+The clean parameter ensures that the previous build is cleaned before the new execution.
 
-Após a inicialização, a API estará disponível em:
+After initialization, the API will be available at:
 👉 http://localhost:8080
-🧪 Executando os Testes
 
-Para rodar a suíte de testes unitários, utilize:
+### 🧪 Running Tests
+
+To run the unit test suite, use:
 
 ```bash
 ./mvnw test
 ```
 
 
-## 📘 4. Documentação da API (Endpoints)
+## 📘 4. API Documentation (Endpoints)
 
-A URL base para todos os endpoints é:
+The base URL for all endpoints is:
 
 👉 **http://localhost:8080**
 
 
-### 👤 Recurso: Persons (Pessoas)
+### 👤 Resource: Persons
 
-Gerencia o cadastro de pessoas no sistema.
+Manages person registration in the system.
 
 
 #### ➕ POST `/api/persons`
 
-Cria uma nova pessoa.
+Creates a new person.
 
 **Request Body:**
 ```json
@@ -187,14 +188,14 @@ Success Response — 201 Created:
 
 #### 📄 GET `/api/persons`
 
-Lista todas as pessoas de forma paginada.
+Lists all persons in a paginated format.
 
-Query Params (opcionais): 
-- `page: número da página (inicia em 0)`, 
-- `size: quantidade de itens por página (padrão: 20)`,
-- `sort: campo para ordenação (ex: name,asc)`
+Query Params (optional): 
+- `page: page number (starts at 0)`, 
+- `size: number of items per page (default: 20)`,
+- `sort: field for sorting (e.g., name,asc)`
 
-Exemplo de chamada:
+Example call:
 
 `GET /api/persons?page=0&size=5&sort=name,asc`
 
@@ -221,7 +222,7 @@ Success Response — 200 OK:
 
 #### 🔍 GET `/api/persons/search?cpf=12345678900`
 
-Busca uma pessoa específica pelo CPF.
+Searches for a specific person by CPF.
 
 Success Response — 200 OK:
 ```json
@@ -234,21 +235,21 @@ Success Response — 200 OK:
 }
 ```
 
-Erro — 404 Not Found: se o CPF não for encontrado.
+Error — 404 Not Found: if the CPF is not found.
 
 #### 🗑️ DELETE `/api/persons/{id}`
 
-Deleta uma pessoa e todos os seus registros de vacinação associados.
+Deletes a person and all their associated vaccination records.
 
-Exemplo:
+Example:
 
 `DELETE /api/persons/1`
 
 Success Response — 204 No Content
 
-### 💉 Recurso: Vaccines (Vacinas)
+### 💉 Resource: Vaccines
 
-Gerencia os tipos de vacina disponíveis no sistema.
+Manages vaccine types available in the system.
 #### ➕ POST `/api/vaccines`
 
 Cadastra um novo tipo de vacina.
@@ -274,7 +275,7 @@ Success Response — 201 Created:
 
 #### 📄 GET `/api/vaccines`
 
-Lista todos os tipos de vacina cadastrados.
+Lists all registered vaccine types.
 
 Success Response — 200 OK:
 ```json
@@ -288,18 +289,18 @@ Success Response — 200 OK:
 ]
 ```
 
-### 💊 Recurso: Vaccination Card (Cartão de Vacinação)
+### 💊 Resource: Vaccination Card
 
-Gerencia os registros de vacinação (o "grid") de uma pessoa específica.
+Manages vaccination records (the "grid") for a specific person.
 
 #### 📄 GET `/api/persons/{personId}/card`
 
-Busca o grid completo do cartão de vacinação de uma pessoa.
+Retrieves the complete vaccination card grid for a person.
 
-Query Param (opcional):
-- `category: filtra as vacinas por categoria (ex: ANTI_RABICA)`
+Query Param (optional):
+- `category: filters vaccines by category (e.g., ANTI_RABICA)`
 
-Exemplo de chamada:
+Example call:
 
 GET `/api/persons/1/card`
 
@@ -351,7 +352,7 @@ Success Response — 200 OK:
 
 #### ➕ `POST /api/persons/{personId}/card`
 
-Registra uma nova dose de vacina para uma pessoa.
+Registers a new vaccine dose for a person.
 
 Request Body:
 ```json
@@ -362,9 +363,9 @@ Request Body:
 }
 ```
 
-Success Response — 201 Created: retorna o DTO atualizado.
+Success Response — 201 Created: returns the updated DTO.
 
-Erro — 400 Bad Request: caso a lógica de validação falhe.
+Error — 400 Bad Request: if validation logic fails.
 ```json
 {
   "message": "1st dose is required before registering the 2nd dose."
@@ -373,9 +374,9 @@ Erro — 400 Bad Request: caso a lógica de validação falhe.
 
 #### 🗑️ `DELETE /api/persons/{personId}/card/records/{recordId}`
 
-Exclui um registro de vacinação específico (uma dose aplicada).
+Deletes a specific vaccination record (an applied dose).
 
-Exemplo:
+Example:
 
 DELETE `/api/persons/1/card/records/101`
 
