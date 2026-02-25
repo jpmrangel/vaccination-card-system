@@ -1,57 +1,57 @@
-# Sistema de Cartão de Vacinação (Vaccination Card System)
+# Vaccination Card System
 
-Este repositório contém o código-fonte completo para um sistema de gerenciamento de cartões de vacinação digital, dividido em um backend Spring Boot e um frontend React.
+This repository contains the complete source code for a digital vaccination card management system, divided into a Spring Boot backend and a React frontend.
 
-## Visão Geral
+## Overview
 
-O objetivo deste projeto é permitir o cadastro de pessoas, tipos de vacinas (com seus esquemas de doses), e o registro das vacinas aplicadas a cada pessoa. A interface principal exibe um "grid" visual do cartão de vacinação, mostrando doses tomadas, faltosas e não aplicáveis.
+The goal of this project is to allow the registration of people, types of vaccines (with their dose schedules), and the record of vaccines administered to each person. The main interface displays a visual "grid" of the vaccination card, showing taken, missing, and non-applicable doses.
 
-## Estrutura do Monorepo
+## Monorepo Structure
 
-* **`/backend`**: Contém a API REST desenvolvida com Java 21, Spring Boot 3.5+, Spring Security (JWT) e Spring Data JPA, conectando-se a um banco de dados PostgreSQL. Segue o padrão de arquitetura de Use Cases.
-    * [Ver README do Backend](./backend/README.md) para detalhes de desenvolvimento e API.
-* **`/frontend`**: Contém a aplicação de interface do usuário desenvolvida com React, TypeScript e Vite. Consome a API do backend para exibir e gerenciar os dados.
-    * [Ver README do Frontend](./frontend/README.md) para detalhes.
-* **`docker-compose.yml`**: Define os serviços necessários (PostgreSQL e a API Backend) para rodar o ambiente completo facilmente com Docker.
+* **`/backend`**: Contains the REST API developed with Java 21, Spring Boot 3.5+, Spring Security (JWT), and Spring Data JPA, connecting to a PostgreSQL database. It follows the Use Cases architecture pattern.
+    * [See Backend README](./backend/README.md) for development and API details.
+* **`/frontend`**: Contains the user interface application developed with React, TypeScript, and Vite. It consumes the backend API to display and manage data.
+    * [See Frontend README](./frontend/README.md) for details.
+* **`docker-compose.yml`**: Defines the necessary services (PostgreSQL and Backend API) to easily run the complete environment with Docker.
 
-## Tecnologias Principais
+## Main Technologies
 
 * **Backend:** Java 21, Spring Boot, Spring Security (JWT), Spring Data JPA, Hibernate, PostgreSQL, Maven
 * **Frontend:** React, TypeScript, Vite, Axios, React Router DOM
-* **Banco de Dados:** PostgreSQL
-* **Containerização:** Docker, Docker Compose
+* **Database:** PostgreSQL
+* **Containerization:** Docker, Docker Compose
 
-## 🚀 Executando o Projeto (Docker Compose - Recomendado)
+## 🚀 Running the Project (Docker Compose - Recommended)
 
-Esta é a maneira mais fácil de rodar o ambiente completo (API + Banco de Dados).
+This is the easiest way to run the complete environment (API + Database).
 
-1.  **Pré-requisitos:**
-    * **Docker:** [Instale o Docker Desktop](https://www.docker.com/products/docker-desktop/) ou Docker Engine/Compose no seu sistema. Certifique-se de que o serviço Docker esteja rodando.
-    * **Git:** Para clonar o repositório.
+1.  **Prerequisites:**
+    * **Docker:** [Install Docker Desktop](https://www.docker.com/products/docker-desktop/) or Docker Engine/Compose on your system. Make sure the Docker service is running.
+    * **Git:** To clone the repository.
 
-2.  **Clone o Repositório:**
+2.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/jpmrangel/vaccination-card-system.git
+    git clone [https://github.com/jpmrangel/vaccination-card-system.git](https://github.com/jpmrangel/vaccination-card-system.git)
     cd vaccination-card-system
     ```
 
-3.  **Inicie os Serviços:**
-    Na **raiz** do projeto (onde o `docker-compose.yml` está), execute:
+3.  **Start the Services:**
+    At the project's **root** (where `docker-compose.yml` is located), run:
     ```bash
     docker-compose up --build -d
     ```
-    * `--build`: Garante que a imagem da API Java seja (re)construída se houver mudanças no código. Pode demorar alguns minutos na primeira vez.
-    * `-d`: (Opcional) Roda os containers em *detached mode* (background). Sem `-d`, os logs aparecerão no terminal atual.
+    * `--build`: Ensures the Java API image is (re)built if there are code changes. It might take a few minutes the first time.
+    * `-d`: (Optional) Runs containers in *detached mode* (background). Without `-d`, logs will appear in the current terminal.
 
-4.  **Aguarde:** Espere alguns instantes para o container do PostgreSQL iniciar e a API Spring Boot conectar-se a ele. Você pode verificar os logs com `docker-compose logs -f vaccination-api`.
+4.  **Wait:** Wait a few moments for the PostgreSQL container to start and the Spring Boot API to connect to it. You can check the logs with `docker-compose logs -f vaccination-api`.
 
-5.  **Acesse:**
-    * **API Backend:** Estará disponível em `http://localhost:8080`.
-    * **Aplicação Frontend:** Navegue até a pasta `frontend` em outro terminal e rode `npm install` (apenas na primeira vez) e `npm run dev`. Acesse `http://localhost:5173` (ou a porta indicada pelo Vite).
+5.  **Access:**
+    * **Backend API:** Will be available at `http://localhost:8080`.
+    * **Frontend Application:** Navigate to the `frontend` folder in another terminal and run `npm install` (only the first time) and `npm run dev`. Access `http://localhost:5173` (or the port indicated by Vite).
 
-**Para Parar os Containers:**
-Na raiz do projeto, execute:
+**To Stop Containers:**
+At the project's root, run:
 ```bash
 docker-compose down
 ```
-(Use docker-compose down -v para remover também o volume postgres_data e apagar os dados do banco).
+(Use docker-compose down -v to also remove the postgres_data volume and delete the database data).
